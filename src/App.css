@@ -1,0 +1,21 @@
+
+.table{
+    height: 50px;
+    width: 50px;
+    background-color: green;
+    color: black;
+    text-align: center;
+    margin: 5px
+    
+}
+.tableReserved{
+    height: 50px;
+    width: 50px;
+    background-color: red;
+    color: black;
+    text-align: center;
+    margin: 5px
+}
+.tableClicked {
+    border: 5px blue solid;
+}
