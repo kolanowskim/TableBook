@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { fetchTablesAction } from "./actions";
+import { fetchTablesAction, setCurrentTable } from "./actions";
 import Input from "./components/input/input";
 import Table from "./components/table/table";
 import Button from "./components/button/button";
-import ReservationForm from "./components/Form/ReservationForm";
+import ReservationForm from "./components/ReservationForm/ReservationForm";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -28,6 +28,10 @@ const StyledInput = styled(Input)`
   height: 20px;
 `;
 
+const StyledButton = styled(Button)`
+  padding: 5px 15px 5px 15px;
+`;
+
 const StyledP = styled.p`
   margin: 20px 0 0 0;
 `;
@@ -40,13 +44,16 @@ const StyledTablesWrapper = styled.div`
   height: 120px;
 `;
 
-function App({ fetchTables, currentTable, tables }) {
+const StyledTable = styled(Table)``;
+
+function App({ fetchTables, currentTable, tables, setTable }) {
   const [date, setDate] = useState("");
   const [timeFrom, setTimeFrom] = useState("");
   const [timeTo, setTimeTo] = useState("");
   const [timeFrom_toDate, setTimeFrom_toDate] = useState(new Date());
   const [timeTo_toDate, setTimeTo_toDate] = useState(new Date());
   const [hiddenTables, setHiddenTables] = useState(true);
+  const [commentBelow, setcommentBelow] = useState(false);
   const [VisibilityReservationForm, setVisibilityReservationForm] =
     useState(false);
   const [alert1hReservation, setalert1hReservation] = useState(false);
@@ -59,6 +66,7 @@ function App({ fetchTables, currentTable, tables }) {
       const year = today.getFullYear();
       today = year + "-" + month + "-" + day;
       onChangeDay(null, today);
+      fetchTables(today);
     }
   });
 
@@ -70,14 +78,23 @@ function App({ fetchTables, currentTable, tables }) {
         3600000
       ) {
         setalert1hReservation(true);
+        setcommentBelow(false);
+        setTable("");
       } else {
         setalert1hReservation(false);
+        setcommentBelow(true);
       }
     }
   }, [timeFrom, timeTo]);
 
   useEffect(() => {
-    fetchTables(date.date);
+    setTimeFrom_toDate({
+      timeFrom_toDate: new Date(`${date.date} ${timeFrom.timeFrom}`).getTime(),
+    });
+    setTimeTo_toDate({
+      timeTo_toDate: new Date(`${date.date} ${timeTo.timeTo}`).getTime(),
+    });
+    console.log(timeFrom_toDate.timeFrom_toDate, timeTo_toDate.timeTo_toDate);
   }, [date]);
 
   const onChangeDay = (event, day) => {
@@ -111,8 +128,6 @@ function App({ fetchTables, currentTable, tables }) {
           type="text"
           name="timeFrom"
           placeholder="od godziny"
-          min="12:00"
-          max="22:30"
           onFocus={(e) => (e.target.type = "time")}
           onBlur={((e) => (e.target.type = "text"), onChangeTimeFrom)}
         />
@@ -121,8 +136,6 @@ function App({ fetchTables, currentTable, tables }) {
           type="text"
           name="timeTo"
           placeholder="do godziny"
-          min="12:30"
-          max="23:00"
           onFocus={(e) => (e.target.type = "time")}
           onBlur={((e) => (e.target.type = "text"), onChangeTimeTo)}
         />
@@ -136,8 +149,9 @@ function App({ fetchTables, currentTable, tables }) {
           date &&
           Object.keys(tables).map((tableNr) => {
             let object = tables[tableNr];
+
             return (
-              <Table
+              <StyledTable
                 key={tableNr}
                 name={tableNr}
                 array={object}
@@ -146,19 +160,22 @@ function App({ fetchTables, currentTable, tables }) {
                 day={date.date}
               >
                 {tableNr}
-              </Table>
+              </StyledTable>
             );
           })
         )}
       </StyledTablesWrapper>
-      {!hiddenTables && (
+      {commentBelow && (
         <div>
           {currentTable ? (
-            <Button
+            <StyledButton
+              className="reserve"
               onClick={() => {
                 setVisibilityReservationForm(true);
               }}
-            />
+            >
+              Zarezerwuj
+            </StyledButton>
           ) : (
             <StyledP>Wybierz zielony-wolny stolik aby zarezerwować</StyledP>
           )}
@@ -185,6 +202,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTables: (date) => dispatch(fetchTablesAction(date)),
+  setTable: (table) => dispatch(setCurrentTable(table)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

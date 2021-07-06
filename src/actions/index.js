@@ -9,7 +9,9 @@ export const fetchTablesAction = (date) => (dispatch) => {
   dispatch({ type: "FETCH_REQUEST" });
 
   return axios
-    .get(`/bookings/getOneDayBookings/idRestaurant/1/bookingDate/${date}`)
+    .get(
+      `https://maco0.pl/bookings/getOneDayBookings/idRestaurant/1/bookingDate/${date}`
+    )
     .then(({ data }) => {
       dispatch({
         type: "FETCHTABLES",
@@ -26,9 +28,8 @@ export const addItemAction =
   (dispatch) => {
     dispatch({ type: "ADD_TABLE_REQUEST" });
     const tableNumber = table.replace(/\D/g, "");
-    console.log(tableNumber, timeFrom, timeTo, date, people);
     return axios
-      .post(`/bookings/create`, {
+      .post(`https://maco0.pl/bookings/create`, {
         id_restaurant: 1,
         id_user: 2,
         booking_date: date,
@@ -38,7 +39,10 @@ export const addItemAction =
         how_many_people: people,
       })
       .then(({ data }) => {
-        console.log(data);
+        dispatch({
+          type: "ADD_TABLE_SUCCESS",
+          payload: { data, table },
+        });
       })
       .catch((err) => {
         console.log(err);
