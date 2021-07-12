@@ -69,6 +69,7 @@ function App({ fetchTables, currentTable, tables, setTable }) {
       onChangeDay(null, today);
       fetchTables(today);
     }
+    console.log(date);
     allReserved();
     if (document.getElementById(currentTable)) {
       if (document.getElementById(currentTable).className === "tableReserved") {
@@ -80,10 +81,7 @@ function App({ fetchTables, currentTable, tables, setTable }) {
   useEffect(() => {
     if (timeFrom && timeTo) {
       setHiddenTables(false);
-      if (
-        timeTo_toDate.timeTo_toDate - timeFrom_toDate.timeFrom_toDate <
-        3600000
-      ) {
+      if (timeTo_toDate - timeFrom_toDate < 3600000) {
         setalert1hReservation(true);
         setcommentBelow(false);
         setTable("");
@@ -96,13 +94,9 @@ function App({ fetchTables, currentTable, tables, setTable }) {
   }, [timeFrom, timeTo]);
 
   useEffect(() => {
-    setTimeFrom_toDate({
-      timeFrom_toDate: new Date(`${date.date} ${timeFrom.timeFrom}`).getTime(),
-    });
-    setTimeTo_toDate({
-      timeTo_toDate: new Date(`${date.date} ${timeTo.timeTo}`).getTime(),
-    });
-    fetchTables(date.date);
+    setTimeFrom_toDate(new Date(`${date} ${timeFrom}`).getTime());
+    setTimeTo_toDate(new Date(`${date} ${timeTo}`).getTime());
+    fetchTables(date);
   }, [date]);
 
   const allReserved = () => {
@@ -119,19 +113,15 @@ function App({ fetchTables, currentTable, tables, setTable }) {
   };
 
   const onChangeDay = (event, day) => {
-    setDate({ date: day ? day : event.target.value });
+    setDate(day ? day : event.target.value);
   };
   const onChangeTimeFrom = (event) => {
-    setTimeFrom({ timeFrom: event.target.value });
-    setTimeFrom_toDate({
-      timeFrom_toDate: new Date(`${date.date} ${event.target.value}`).getTime(),
-    });
+    setTimeFrom(event.target.value);
+    setTimeFrom_toDate(new Date(`${date} ${event.target.value}`).getTime());
   };
   const onChangeTimeTo = (event) => {
-    setTimeTo({ timeTo: event.target.value });
-    setTimeTo_toDate({
-      timeTo_toDate: new Date(`${date.date} ${event.target.value}`).getTime(),
-    });
+    setTimeTo(event.target.value);
+    setTimeTo_toDate(new Date(`${date} ${event.target.value}`).getTime());
   };
 
   return (
@@ -140,7 +130,7 @@ function App({ fetchTables, currentTable, tables, setTable }) {
         <StyledInput
           type="text"
           name="date"
-          placeholder={date.date}
+          placeholder={date}
           onFocus={(e) => (e.target.type = "date")}
           onBlur={((e) => (e.target.type = "text"), onChangeDay)}
         />
@@ -175,9 +165,9 @@ function App({ fetchTables, currentTable, tables, setTable }) {
                 key={tableNr}
                 name={tableNr}
                 array={object}
-                tFromInput={timeFrom_toDate.timeFrom_toDate}
-                tToInput={timeTo_toDate.timeTo_toDate}
-                day={date.date}
+                tFromInput={timeFrom_toDate}
+                tToInput={timeTo_toDate}
+                day={date}
               >
                 {tableNr}
               </StyledTable>
@@ -207,9 +197,9 @@ function App({ fetchTables, currentTable, tables, setTable }) {
       )}
       {VisibilityReservationForm ? (
         <ReservationForm
-          date={date.date}
-          timeFrom={timeFrom.timeFrom}
-          timeTo={timeTo.timeTo}
+          date={date}
+          timeFrom={timeFrom}
+          timeTo={timeTo}
           visible={setVisibilityReservationForm}
         />
       ) : null}
