@@ -69,7 +69,6 @@ function App({ fetchTables, currentTable, tables, setTable }) {
       onChangeDay(null, today);
       fetchTables(today);
     }
-    console.log(date);
     allReserved();
     if (document.getElementById(currentTable)) {
       if (document.getElementById(currentTable).className === "tableReserved") {
