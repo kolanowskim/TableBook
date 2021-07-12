@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setCurrentTable } from "../../actions";
-import "../../App.css";
+import "./table.css";
 
 const Table = ({ children, array, tFromInput, tToInput, day, setTable }) => {
   const timeCheck = array.find(({ from_hour, to_hour }) => {
@@ -29,6 +29,7 @@ const Table = ({ children, array, tFromInput, tToInput, day, setTable }) => {
   return (
     <>
       <div
+        id={children}
         className={timeCheck ? "tableReserved" : "table"}
         onClick={timeCheck ? null : (e) => setCurrentTableClick(e)}
       >

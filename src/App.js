@@ -57,6 +57,7 @@ function App({ fetchTables, currentTable, tables, setTable }) {
   const [VisibilityReservationForm, setVisibilityReservationForm] =
     useState(false);
   const [alert1hReservation, setalert1hReservation] = useState(false);
+  const [alertAllReserved, setalertAllReserved] = useState(false);
 
   useEffect(() => {
     if (date === "") {
@@ -67,6 +68,12 @@ function App({ fetchTables, currentTable, tables, setTable }) {
       today = year + "-" + month + "-" + day;
       onChangeDay(null, today);
       fetchTables(today);
+    }
+    allReserved();
+    if (document.getElementById(currentTable)) {
+      if (document.getElementById(currentTable).className === "tableReserved") {
+        setTable("");
+      }
     }
   });
 
@@ -85,6 +92,7 @@ function App({ fetchTables, currentTable, tables, setTable }) {
         setcommentBelow(true);
       }
     }
+    allReserved();
   }, [timeFrom, timeTo]);
 
   useEffect(() => {
@@ -94,8 +102,21 @@ function App({ fetchTables, currentTable, tables, setTable }) {
     setTimeTo_toDate({
       timeTo_toDate: new Date(`${date.date} ${timeTo.timeTo}`).getTime(),
     });
-    console.log(timeFrom_toDate.timeFrom_toDate, timeTo_toDate.timeTo_toDate);
+    fetchTables(date.date);
   }, [date]);
+
+  const allReserved = () => {
+    let numberOfReserved = document.querySelectorAll(".tableReserved").length;
+    if (numberOfReserved > 0) {
+      let lengthOfTables = Object.keys(tables).length;
+      if (numberOfReserved === lengthOfTables) {
+        setTable("");
+        setalertAllReserved(true);
+      } else {
+        setalertAllReserved(false);
+      }
+    }
+  };
 
   const onChangeDay = (event, day) => {
     setDate({ date: day ? day : event.target.value });
@@ -149,7 +170,6 @@ function App({ fetchTables, currentTable, tables, setTable }) {
           date &&
           Object.keys(tables).map((tableNr) => {
             let object = tables[tableNr];
-
             return (
               <StyledTable
                 key={tableNr}
@@ -176,12 +196,15 @@ function App({ fetchTables, currentTable, tables, setTable }) {
             >
               Zarezerwuj
             </StyledButton>
+          ) : alertAllReserved ? (
+            <StyledP>
+              Niestety wszystkie stoliki są zarezerwowane w tym czasie
+            </StyledP>
           ) : (
             <StyledP>Wybierz zielony-wolny stolik aby zarezerwować</StyledP>
           )}
         </div>
       )}
-
       {VisibilityReservationForm ? (
         <ReservationForm
           date={date.date}
