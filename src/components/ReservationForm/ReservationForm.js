@@ -10,16 +10,20 @@ import xIcon from "../../assets/x.svg";
 const StyledWrapper = styled.div`
   z-index: 99;
   position: absolute;
-  background-color: blanchedalmond;
-  width: 700px;
+  background-color: #f79d84;
+  width: 900px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledInput = styled(Input)`
@@ -27,12 +31,19 @@ const StyledInput = styled(Input)`
   margin-top: 20px;
   :nth-child(5) {
     margin-bottom: 20px;
+    cursor: pointer;
   }
 `;
 
+const StyledMessage = styled.div`
+  height: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
 const StyledButton = styled(Button)`
-  max-width: 100px;
-  margin-bottom: 20px;
+  padding: 7px 17px 7px 17px;
+  font-size: 20px;
 `;
 const StyledButtonIcon = styled(Button)`
   position: absolute;
@@ -130,7 +141,9 @@ const ReservationForm = ({
             onBlur={handleBlur}
             value={values.people}
           />
-          {errors.people && touched.people && errors.people}
+          <StyledMessage>
+            {errors.people && touched.people && errors.people}
+          </StyledMessage>
           <StyledButton
             className="reserve"
             type="submit"

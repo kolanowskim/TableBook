@@ -1,21 +1,36 @@
 
 .table{
-    height: 50px;
-    width: 50px;
-    background-color: green;
+    height: 70px;
+    width: 70px;
+    background-color: #59cd90;
     color: black;
     text-align: center;
-    margin: 5px
+    margin: 5px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 5px;
+    
+
     
 }
 .tableReserved{
-    height: 50px;
-    width: 50px;
-    background-color: red;
+    height: 70px;
+    width: 70px;
+    background-color: #ee6352;
     color: black;
     text-align: center;
-    margin: 5px
+    border-radius: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 5px;
 }
 .tableClicked {
-    border: 5px blue solid;
+    border: 5px #3FA7D6 solid;
 }

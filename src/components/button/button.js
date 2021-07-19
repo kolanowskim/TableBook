@@ -7,6 +7,7 @@ const Button = styled.button`
     color: white;
     border: none;
     border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 7px 15px;
   }
   &.icon {
     background-image: url(${({ icon }) => icon});

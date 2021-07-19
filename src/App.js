@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import GlobalStyle from "./theme/globalStyle";
 import { fetchTablesAction, setCurrentTable } from "./actions";
 import Input from "./components/input/input";
 import Table from "./components/table/table";
@@ -9,7 +10,7 @@ import ReservationForm from "./components/ReservationForm/ReservationForm";
 
 const StyledWrapper = styled.div`
   position: relative;
-  height: 60vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,22 +19,25 @@ const StyledWrapper = styled.div`
 
 const StyledInputsWrapper = styled.div`
   display: flex;
+  margin-bottom: 40px;
 `;
 
+const StyledDataInput = styled.div``;
+const StyledFromHourInput = styled.div``;
+const StyledToHourInput = styled.div``;
+
 const StyledInput = styled(Input)`
-  display: inline-block;
-  text-align: center;
-  width: 130px;
-  margin: 15px 5px 0px 5px;
-  height: 20px;
+  margin: 7px 20px 0 0;
+  cursor: pointer;
 `;
 
 const StyledButton = styled(Button)`
-  padding: 5px 15px 5px 15px;
+  padding: 7px 17px 7px 17px;
+  font-size: 20px;
 `;
 
 const StyledP = styled.p`
-  margin: 20px 0 0 0;
+  margin: 0;
 `;
 
 const StyledTablesWrapper = styled.div`
@@ -41,8 +45,32 @@ const StyledTablesWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  height: 120px;
+  align-items: center;
+  height: 220px;
+  width: 830px;
+  background-color: #fac05e;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 10px;
+  padding: 15px;
+  div:nth-child(1),
+  div:nth-child(4),
+  div:nth-child(7),
+  div:nth-child(10) {
+    margin-bottom: auto;
+  }
+  div:nth-child(3),
+  div:nth-child(6),
+  div:nth-child(9) {
+    margin-top: auto;
+  }
 `;
+
+const StyledMessagesWrapper = styled.div`
+  margin-top: 40px;
+  height: 20px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+const StyledMessages = styled.div``;
 
 const StyledTable = styled(Table)``;
 
@@ -125,30 +153,38 @@ function App({ fetchTables, currentTable, tables, setTable }) {
 
   return (
     <StyledWrapper>
+      <GlobalStyle />
       <StyledInputsWrapper>
-        <StyledInput
-          type="text"
-          name="date"
-          placeholder={date}
-          onFocus={(e) => (e.target.type = "date")}
-          onBlur={((e) => (e.target.type = "text"), onChangeDay)}
-        />
-        <StyledP>odGodz</StyledP>
-        <StyledInput
-          type="text"
-          name="timeFrom"
-          placeholder="od godziny"
-          onFocus={(e) => (e.target.type = "time")}
-          onBlur={((e) => (e.target.type = "text"), onChangeTimeFrom)}
-        />
-        <StyledP>doGodz</StyledP>
-        <StyledInput
-          type="text"
-          name="timeTo"
-          placeholder="do godziny"
-          onFocus={(e) => (e.target.type = "time")}
-          onBlur={((e) => (e.target.type = "text"), onChangeTimeTo)}
-        />
+        <StyledDataInput>
+          <StyledP>Dzień</StyledP>
+          <StyledInput
+            type="text"
+            name="date"
+            placeholder={date}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={((e) => (e.target.type = "text"), onChangeDay)}
+          />
+        </StyledDataInput>
+        <StyledFromHourInput>
+          <StyledP>Od godziny</StyledP>
+          <StyledInput
+            type="text"
+            name="timeFrom"
+            placeholder="od godziny"
+            onFocus={(e) => (e.target.type = "time")}
+            onBlur={((e) => (e.target.type = "text"), onChangeTimeFrom)}
+          />
+        </StyledFromHourInput>
+        <StyledToHourInput>
+          <StyledP>Do godziny</StyledP>
+          <StyledInput
+            type="text"
+            name="timeTo"
+            placeholder="do godziny"
+            onFocus={(e) => (e.target.type = "time")}
+            onBlur={((e) => (e.target.type = "text"), onChangeTimeTo)}
+          />
+        </StyledToHourInput>
       </StyledInputsWrapper>
       <StyledTablesWrapper>
         {alert1hReservation ? (
@@ -174,26 +210,28 @@ function App({ fetchTables, currentTable, tables, setTable }) {
           })
         )}
       </StyledTablesWrapper>
-      {commentBelow && (
-        <div>
-          {currentTable ? (
-            <StyledButton
-              className="reserve"
-              onClick={() => {
-                setVisibilityReservationForm(true);
-              }}
-            >
-              Zarezerwuj
-            </StyledButton>
-          ) : alertAllReserved ? (
-            <StyledP>
-              Niestety wszystkie stoliki są zarezerwowane w tym czasie
-            </StyledP>
-          ) : (
-            <StyledP>Wybierz zielony-wolny stolik aby zarezerwować</StyledP>
-          )}
-        </div>
-      )}
+      <StyledMessagesWrapper>
+        {commentBelow && (
+          <StyledMessages>
+            {currentTable ? (
+              <StyledButton
+                className="reserve"
+                onClick={() => {
+                  setVisibilityReservationForm(true);
+                }}
+              >
+                Zarezerwuj
+              </StyledButton>
+            ) : alertAllReserved ? (
+              <StyledP>
+                Niestety wszystkie stoliki są zarezerwowane w tym czasie
+              </StyledP>
+            ) : (
+              <StyledP>Wybierz zielony-wolny stolik aby zarezerwować</StyledP>
+            )}
+          </StyledMessages>
+        )}
+      </StyledMessagesWrapper>
       {VisibilityReservationForm ? (
         <ReservationForm
           date={date}
