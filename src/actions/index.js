@@ -10,7 +10,7 @@ export const fetchTablesAction = (date) => (dispatch) => {
 
   return axios
     .get(
-      `https://maco0.pl/bookings/getOneDayBookings/idRestaurant/1/bookingDate/${date}`
+      `http://api-tablebook.kolanowskim.pl/bookings/getOneDayBookings/idRestaurant/1/bookingDate/${date}`
     )
     .then(({ data }) => {
       dispatch({
@@ -29,7 +29,7 @@ export const addItemAction =
     dispatch({ type: "ADD_TABLE_REQUEST" });
     const tableNumber = table.replace(/\D/g, "");
     return axios
-      .post(`https://maco0.pl/bookings/create`, {
+      .post(`http://api-tablebook.kolanowskim.pl/bookings/create`, {
         id_restaurant: 1,
         id_user: 2,
         booking_date: date,
