@@ -1,5 +1,6 @@
 # TableBook
-Interface for booking tables in a restaurant
+Interface for booking tables in a restaurant.
+It was project for studies. I made frontend view, my friend made API - backend.
 
 ## General Information
 - You must indicate reservation hours 
@@ -32,6 +33,9 @@ Interface for booking tables in a restaurant
 ### Under 1 hour:
 ![image](https://user-images.githubusercontent.com/83921557/155859138-dba35c25-a22a-4aa7-8feb-665dd05b195a.png)
 
+### All reserved:
+
+![image](https://user-images.githubusercontent.com/83921557/155859155-fbe3b820-a9ea-47a0-8cae-2b14d6f19346.png)
 
 
 
